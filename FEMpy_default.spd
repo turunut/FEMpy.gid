@@ -4,10 +4,10 @@
     <style show_menubutton_about='0' show_menubutton_search='1'>
     </style>
 	
-	<value n="model" pn="Model" v='' values='PlaneStress, Solid' icon="one" help="Type of model"></value>
+	<value n="model" pn="Model" v='' values='PlaneStress,Solid' icon="one" help="Type of model"></value>
 	
     <!-- Problem Kind -->
-	<value n="kind" pn="Kind" v='Analysis' values='Analysis, Homogenization, Reduction' icon="one" help="Problem kind.">
+	<value n="kind" pn="Kind" v='Analysis' values='Analysis,Homogenization,Reduction' icon="one" help="Problem kind.">
 		<dependencies value="Analysis"        node="../container[@n='bcs']" att1="state" v1='normal'/>
 		
 		<dependencies value="Homogenization"  node="../container[@n='bcs']" att1="state" v1='hidden'/>

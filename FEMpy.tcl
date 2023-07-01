@@ -162,7 +162,7 @@ proc FEMpy::GetElemType { domNode args model } {
     set modelType [ FEMpy::GetNodeValue {/FEMpy_customlib_data/value[@n='model']} ]
     if { $modelType == "PlaneStress" } {
         return surface
-    } elseif { $element_type == "Solid" } {
+    } elseif { $modelType == "Solid" } {
         return volume
     }
 }
