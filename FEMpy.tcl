@@ -160,9 +160,9 @@ proc FEMpy::GetBlocksList { domNode args containerName } {
 
 proc FEMpy::GetElemType { domNode args model } {
     set modelType [ FEMpy::GetNodeValue {/FEMpy_customlib_data/value[@n='model']} ]
-    if { $modelType == "PlaneStress" } {
-        return surface
-    } elseif { $modelType == "Solid" } {
+    if { $modelType == "2D" } {
+        return line,surface
+    } elseif { $modelType == "3D" } {
         return volume
     }
 }
@@ -547,7 +547,7 @@ proc GiD_Event_AfterRunCalculation { basename dir problemtypedir where error err
     
     set modelType [ FEMpy::GetNodeValue {/FEMpy_customlib_data/value[@n='model']} ]
     
-    if {$modelType eq "PlaneStress"} {
+    if {$modelType eq "2D"} {
     
         set filenameMesh "${dir}/data/${basename}.msh"
     
