@@ -3,21 +3,26 @@
 <FEMpy_customlib_data version='1.0'>
     <style show_menubutton_about='0' show_menubutton_search='1'></style>
 	
-	<value n="model" pn="Model" v='2D' values='2D,3D' icon="one" help="Type of model"></value>
+	<value n="dimension" pn="Dimension" v='2D' values='2D,3D' icon="one" help="Dimension"></value>
+	
+	<value n="model" pn="Model" v='PlaneStress' values='[GetModel]' icon="one" help="Type of model"></value>
 	
     <!-- Problem Kind -->
 	<value n="kind" pn="Kind" v='Analysis' values='Analysis,Homogenization,Reduction' icon="one" help="Problem kind." actualize_tree='1'>
 		<dependencies value="Analysis"       node="../condition[@n='bcs']"        att1="state" v1='normal'/>
+		<dependencies value="Analysis"       node="../condition[@n='lds']"        att1="state" v1='normal'/>
 		<dependencies value="Analysis"       node="../container[@n='dataHomo']"   att1="state" v1='hidden'/>
 		<dependencies value="Analysis"       node="../container[@n='stagesAnly']" att1="state" v1='normal'/>
 		<dependencies value="Analysis"       node="../container[@n='stagesHomo']" att1="state" v1='hidden'/>
 		
 		<dependencies value="Homogenization" node="../condition[@n='bcs']"        att1="state" v1='hidden'/>
+		<dependencies value="Homogenization" node="../condition[@n='lds']"        att1="state" v1='hidden'/>
 		<dependencies value="Homogenization" node="../container[@n='dataHomo']"   att1="state" v1='normal'/>
 		<dependencies value="Homogenization" node="../container[@n='stagesAnly']" att1="state" v1='hidden'/>
 		<dependencies value="Homogenization" node="../container[@n='stagesHomo']" att1="state" v1='normal'/>
 		
 		<dependencies value="Reduction"      node="../condition[@n='bcs']"        att1="state" v1='hidden'/>
+		<dependencies value="Reduction"      node="../condition[@n='lds']"        att1="state" v1='hidden'/>
 		<dependencies value="Reduction"      node="../container[@n='dataHomo']"   att1="state" v1='hidden'/>
 		<dependencies value="Reduction"      node="../container[@n='stagesAnly']" att1="state" v1='hidden'/>
 		<dependencies value="Reduction"      node="../container[@n='stagesHomo']" att1="state" v1='hidden'/>
@@ -49,14 +54,31 @@
         </blockdata>
     </container> 
 		
-	<condition n="zones" pn="Zones" ov='[GetGeometry]' ovm="element" icon="zones" help="Select your material and the volumes related to it">
+	<condition n="zones" pn="Zones" ov='[GetGroup]' ovm="element" icon="zones" help="Select your material and the volumes related to it">
 		<value n="material" pn="Laminate" editable='0' help="Choose a material from the database" values_tree='[GetMaterialsList]'></value>
-	</condition> 
-		
-	<condition n="bcs" pn="Boundary Conditions" ov='point,line,surface' ovm="node" icon="boundaryConditions" help="Define boundary conditions" state='normal'>
-		<value n="flagsBC"   pn="Flags BCs" v="1 1 1"/>
-		<value n="valueBC"   pn="Values BC" v="0.0 0.0 0.0"/>
 	</condition>
+	
+    <container n="bcs" pn="Boundary Conditions" icon="boundaryConditions">
+	    <condition n="dirichlet" pn="Dirichlet" ov='point,line,surface,volume' ovm="node">
+		    <value n="flags"   pn="Flags"  v="1 1 1"/>
+		    <value n="values"  pn="Values" v="0.0 0.0 0.0"/>
+	    </condition>
+	    <condition n="newman" pn="Newman" ov='line,surface,volume' ovm="element" help="Select your material and the volumes related to it">
+		    <value n="flags"   pn="Flags"  v="1 1 1"/>
+		    <value n="values"  pn="Values" v="0.0 0.0 0.0"/>
+	    </condition>
+    </container>
+	
+    <container n="lds" pn="Loads" icon="nodalForce">
+	    <condition n="nodal" pn="Nodal" ov='point,line,surface,volume' ovm="node">
+		    <value n="flags"   pn="Flags"  v="1 1 1"/>
+		    <value n="values"  pn="Values" v="0.0 0.0 0.0"/>
+	    </condition>
+	    <condition n="distribuited" pn="Distribuited" ov='line,surface,volume' ovm="element" help="Select your material and the volumes related to it">
+		    <value n="flags"   pn="Flags"  v="1 1 1"/>
+		    <value n="values"  pn="Values" v="0.0 0.0 0.0"/>
+	    </condition>
+    </container>
 
 	<container n="stagesAnly" pn="Stages [+]" icon="stages" help="Stages definition. Shown by order of execution." state='normal'>
         <blockdata n="stage" name='Stage1' sequence='1' editable_name='unique' icon="one" help='Stage' morebutton="0" actualize_tree='1'>
@@ -111,9 +133,14 @@
 	
 	<!-- procedimientos -->
     <procs>
-        <proc n='GetGeometry' args='args'>
+        <proc n='GetModel' args='args'>
             <![CDATA[
-            FEMpy::GetElemType $domNode $args model
+            FEMpy::GetModelType $domNode $args model
+            ]]>
+        </proc>
+        <proc n='GetGroup' args='args'>
+            <![CDATA[
+            FEMpy::GetGroupType $domNode $args model
             ]]>
         </proc>
 		<proc n='GetMaterialsList' args='args'>

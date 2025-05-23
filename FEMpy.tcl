@@ -158,11 +158,28 @@ proc FEMpy::GetBlocksList { domNode args containerName } {
     return [join $result ,]
 }
 
-proc FEMpy::GetElemType { domNode args model } {
-    set modelType [ FEMpy::GetNodeValue {/FEMpy_customlib_data/value[@n='model']} ]
+proc FEMpy::GetModelType { domNode args model } {
+    set modelType [ FEMpy::GetNodeValue {/FEMpy_customlib_data/value[@n='dimension']} ]
     if { $modelType == "2D" } {
-        return line,surface
+        return Truss,Beam,Shell,PlaneStress,PlaneStrain
     } elseif { $modelType == "3D" } {
+        return Shell,Solid
+    }
+}
+
+proc FEMpy::GetGroupType { domNode args model } {
+    set modelType [ FEMpy::GetNodeValue {/FEMpy_customlib_data/value[@n='model']} ]
+    if       { $modelType == "Truss" } {
+        return line
+    } elseif { $modelType == "Beam" } {
+        return line
+    } elseif { $modelType == "Shell" } {
+        return surface
+    } elseif { $modelType == "PlaneStress" } {
+        return surface
+    } elseif { $modelType == "PlaneStrain" } {
+        return surface
+    } elseif { $modelType == "Solid" } {
         return volume
     }
 }
@@ -469,9 +486,14 @@ proc FEMpy::InitWriteFile {filename} {
     FEMpy::WriteSets $filenameSets
     GiD_WriteCalculationFile end
     
-    set filenameBC "${directoryName}data/${problemName}.fix"
+    set filenameBC "${directoryName}data/${problemName}.bcs"
     GiD_WriteCalculationFile init $filenameBC
     FEMpy::WriteBCs $filenameBC
+    GiD_WriteCalculationFile end
+    
+    set filenameLD "${directoryName}data/${problemName}.lds"
+    GiD_WriteCalculationFile init $filenameLD
+    FEMpy::WriteLDs $filenameLD
     GiD_WriteCalculationFile end
     
     set filenameMesh "${directoryName}data/${problemName}.msh"
@@ -516,31 +538,69 @@ proc FEMpy::WriteSets { filename } {
 
 proc FEMpy::WriteBCs { filename } {
     
-    set address "bcs"
+    set document [$::gid_groups_conds::doc documentElement]
+    
+
+    set address "dirichlet"
+    
+    FEMpy::WriteString "on_node"
+
+    FEMpy::PrintCondition $document $address
+    
+    FEMpy::WriteString "end_on_node"
+
+    
+    set address "newman"
+    
+    FEMpy::WriteString "on_boundary"
+
+    FEMpy::PrintCondition $document $address
+    
+    FEMpy::WriteString "end_on_boundary"
+    
+}
+
+proc FEMpy::WriteLDs { filename } {
     
     set document [$::gid_groups_conds::doc documentElement]
     
-    FEMpy::WriteString "on_nodes"
+
+    set address "nodal"
     
-    set ID 1
+    FEMpy::WriteString "on_node"
+
+    FEMpy::PrintCondition $document $address
+    
+    FEMpy::WriteString "end_on_node"
+    
+
+    set address "distribuited"
+    
+    FEMpy::WriteString "on_boundary"
+
+    FEMpy::PrintCondition $document $address
+    
+    FEMpy::WriteString "end_on_boundary"
+    
+}
+
+proc FEMpy::PrintCondition { document address } {
+
     foreach gNode [$document selectNodes {//condition[@n=$address]/group}] {
         set condition_formats ""
         set n [$gNode @n]
         
-        set flags_node [$gNode selectNodes {./value[@n="flagsBC"]}]
+        set flags_node [$gNode selectNodes {./value[@n="flags"]}]
         set flags [$flags_node @v]
         
-        set valus_node [$gNode selectNodes {./value[@n="valueBC"]}]
-        set valus [$valus_node @v]
+        set values_node [$gNode selectNodes {./value[@n="values"]}]
+        set values [$values_node @v]
         
-        dict set condition_formats $n "%d $flags $valus \n"
-        #GiD_WriteCalculationFile puts "$flags $valus"
+        dict set condition_formats $n "%d $flags $values \n"
+        
         GiD_WriteCalculationFile nodes $condition_formats
-        incr ID 1
     }
-    
-    FEMpy::WriteString "end_on_nodes"
-    
+
 }
 
 proc GiD_Event_AfterRunCalculation { basename dir problemtypedir where error errorfilename } {
