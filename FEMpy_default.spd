@@ -9,20 +9,21 @@
 	
     <!-- Problem Kind -->
 	<value n="kind" pn="Kind" v='Analysis' values='Analysis,Homogenization,Reduction' icon="one" help="Problem kind." actualize_tree='1'>
-		<dependencies value="Analysis"       node="../condition[@n='bcs']"        att1="state" v1='normal'/>
-		<dependencies value="Analysis"       node="../condition[@n='lds']"        att1="state" v1='normal'/>
+		<!-- <dependencies value="Analysis"       node="../condition[@n='bcs']"        att1="state" v1='normal'/> -->
+		<dependencies value="Analysis"       node="../container[@n='bcs']"        att1="state" v1='normal'/>
+		<dependencies value="Analysis"       node="../container[@n='lds']"        att1="state" v1='normal'/>
 		<dependencies value="Analysis"       node="../container[@n='dataHomo']"   att1="state" v1='hidden'/>
 		<dependencies value="Analysis"       node="../container[@n='stagesAnly']" att1="state" v1='normal'/>
 		<dependencies value="Analysis"       node="../container[@n='stagesHomo']" att1="state" v1='hidden'/>
 		
-		<dependencies value="Homogenization" node="../condition[@n='bcs']"        att1="state" v1='hidden'/>
-		<dependencies value="Homogenization" node="../condition[@n='lds']"        att1="state" v1='hidden'/>
+		<dependencies value="Homogenization" node="../container[@n='bcs']"        att1="state" v1='hidden'/>
+		<dependencies value="Homogenization" node="../container[@n='lds']"        att1="state" v1='hidden'/>
 		<dependencies value="Homogenization" node="../container[@n='dataHomo']"   att1="state" v1='normal'/>
 		<dependencies value="Homogenization" node="../container[@n='stagesAnly']" att1="state" v1='hidden'/>
 		<dependencies value="Homogenization" node="../container[@n='stagesHomo']" att1="state" v1='normal'/>
 		
-		<dependencies value="Reduction"      node="../condition[@n='bcs']"        att1="state" v1='hidden'/>
-		<dependencies value="Reduction"      node="../condition[@n='lds']"        att1="state" v1='hidden'/>
+		<dependencies value="Reduction"      node="../container[@n='bcs']"        att1="state" v1='hidden'/>
+		<dependencies value="Reduction"      node="../container[@n='lds']"        att1="state" v1='hidden'/>
 		<dependencies value="Reduction"      node="../container[@n='dataHomo']"   att1="state" v1='hidden'/>
 		<dependencies value="Reduction"      node="../container[@n='stagesAnly']" att1="state" v1='hidden'/>
 		<dependencies value="Reduction"      node="../container[@n='stagesHomo']" att1="state" v1='hidden'/>
