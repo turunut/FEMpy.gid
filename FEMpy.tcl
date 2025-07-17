@@ -486,7 +486,7 @@ proc FEMpy::InitWriteFile {filename} {
     FEMpy::WriteSets $filenameSets
     GiD_WriteCalculationFile end
     
-    set filenameBC "${directoryName}data/${problemName}.bcs"
+    set filenameBC "${directoryName}data/${problemName}.fix"
     GiD_WriteCalculationFile init $filenameBC
     FEMpy::WriteBCs $filenameBC
     GiD_WriteCalculationFile end
