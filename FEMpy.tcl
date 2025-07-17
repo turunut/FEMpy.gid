@@ -543,11 +543,11 @@ proc FEMpy::WriteBCs { filename } {
 
     set address "dirichlet"
     
-    FEMpy::WriteString "on_node"
+    FEMpy::WriteString "on_nodes"
 
     FEMpy::PrintCondition $document $address
     
-    FEMpy::WriteString "end_on_node"
+    FEMpy::WriteString "end_on_nodes"
 
     
     set address "newman"
