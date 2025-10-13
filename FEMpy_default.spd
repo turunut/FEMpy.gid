@@ -76,8 +76,13 @@
 		    <value n="values"  pn="Values" v="0.0 0.0 0.0"/>
 	    </condition>
 	    <condition n="distribuited" pn="Distribuited" ov='line,surface,volume' ovm="element" help="Select your material and the volumes related to it">
+	    <!--<condition n="distribuited" pn="Distribuited" ov='surface' ovm="face_element" help="Select your material and the volumes related to it"> -->
 		    <value n="flags"   pn="Flags"  v="1 1 1"/>
 		    <value n="values"  pn="Values" v="0.0 0.0 0.0"/>
+	    </condition>
+	    <condition n="pressure" pn="Pressure" ov='surface' ovm="element" help="Select your material and the volumes related to it">
+		    <value n="flags"   pn="Flags"  v="1"/>
+		    <value n="values"  pn="Values" v="0.0"/>
 	    </condition>
     </container>
 
