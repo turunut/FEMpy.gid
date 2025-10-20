@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>    <!-- -*- coding: utf-8; mode: SGML -*- -->
+
+<TrencadX_customlib_data version='1.0'>
+    <style show_menubutton_about='0' show_menubutton_search='1'></style>
+	
+	<value n="dimension" pn="DIMENSION" v='2D' values='2D,3D' icon="one" help="Dimension" actualize_tree='1'></value>
+	
+    <!-- Problem Kind -->
+	<value n="kind" pn="KIND" v='analysis' values='analysis,homogenization,reduction' icon="one" help="Problem kind." actualize_tree='1'>
+		<dependencies value="analysis"       node="../container[@n='bcs']"        att1="state" v1='normal'/>
+		<dependencies value="analysis"       node="../container[@n='lds']"        att1="state" v1='normal'/>
+		<dependencies value="analysis"       node="../container[@n='dataHomo']"   att1="state" v1='hidden'/>
+		<dependencies value="analysis"       node="../container[@n='stagesAnly']" att1="state" v1='normal'/>
+		<dependencies value="analysis"       node="../container[@n='stagesHomo']" att1="state" v1='hidden'/>
+		
+		<dependencies value="homogenization" node="../container[@n='bcs']"        att1="state" v1='hidden'/>
+		<dependencies value="homogenization" node="../container[@n='lds']"        att1="state" v1='hidden'/>
+		<dependencies value="homogenization" node="../container[@n='dataHomo']"   att1="state" v1='normal'/>
+		<dependencies value="homogenization" node="../container[@n='stagesAnly']" att1="state" v1='hidden'/>
+		<dependencies value="homogenization" node="../container[@n='stagesHomo']" att1="state" v1='normal'/>
+		
+		<dependencies value="reduction"      node="../container[@n='bcs']"        att1="state" v1='hidden'/>
+		<dependencies value="reduction"      node="../container[@n='lds']"        att1="state" v1='hidden'/>
+		<dependencies value="reduction"      node="../container[@n='dataHomo']"   att1="state" v1='hidden'/>
+		<dependencies value="reduction"      node="../container[@n='stagesAnly']" att1="state" v1='hidden'/>
+		<dependencies value="reduction"      node="../container[@n='stagesHomo']" att1="state" v1='hidden'/>
+	</value>
+	
+	<value n="model" pn="MODEL" v='planestress' values='[GetModel]' icon="one" help="Type of model" actualize_tree='1'></value>
+	
+    <container n="dataHomo" pn="Data Homogenization" state='hidden'>
+        <value n="homogenization" pn="Homogenization" v='True'   values='True,False' help="Type of model"></value>
+        <value n="displField"     pn="Displ. Field"   v='FO'     values='FO,SO'      help="Type of model"></value>
+        <value n="boundary"       pn="Boundary"       v='Linear' values='Taylor,Linear,Periodic' help="Type of model"></value>
+    </container>
+
+	<include path="XML/materials.xml"/>
+
+	<condition n="zones" pn="ZONES" ov='[GetBodyElem]' ovm="element" icon="zones" help="Select your material and the volumes related to it">
+		<value n="material" pn="Material" editable='0' help="Choose a material from the database" values_tree='[GetMaterialsList]'></value>
+	</condition>
+	
+    <container n="bcs" pn="Boundary Conditions" icon="boundaryConditions">
+	    <condition n="dirichlet" pn="DIRICHLET" ov='point,line,surface,volume' ovm="node">
+		    <value n="dof0" pn="displ. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof1" pn="displ. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof2" pn="displ. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof3" pn="rotat. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof4" pn="rotat. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof5" pn="rotat. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+	    </condition>
+    </container>
+	
+    <container n="lds" pn="LOADS" icon="nodalForce">
+	    <condition n="nodalLD" pn="NODAL" ov='point,line,surface,volume' ovm="node">
+		    <value n="dof0" pn="reacc. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof1" pn="reacc. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof2" pn="reacc. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof3" pn="momen. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof4" pn="momen. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof5" pn="momen. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+	    </condition>
+	    <condition n="boundaryLD" pn="BOUNDARY" ov='[GetBounElem]' ovm="face_element" help="Select your material and the volumes related to it">
+		    <value n="dof0" pn="reacc. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof1" pn="reacc. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof2" pn="reacc. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof3" pn="momen. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof4" pn="momen. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof5" pn="momen. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+	    </condition>
+	    <condition n="bodyLD" pn="BODY" ov='[GetBodyElem]' ovm="element" help="Select your material and the volumes related to it">
+		    <value n="dof0" pn="reacc. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof1" pn="reacc. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="dof2" pn="reacc. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof3" pn="momen. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof4" pn="momen. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="dof5" pn="momen. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+	    </condition>
+    </container>
+
+	<container n="stagesAnly" pn="STAGES [+]" icon="stages" help="Stages definition. Shown by order of execution." state='normal'>
+        <blockdata n="stage" name='STAGE1' sequence='1' editable_name='unique' icon="one" help='Stage' morebutton="0" actualize_tree='1'>
+			<blockdata n="substage" name='SUBSTAGE1' sequence='1' editable_name='unique' icon="one" help='Stage' morebutton="0" actualize_tree='1'>
+                <value n="loadIncrement" pn="Load Increment" v='1.0'  string_is='double'  help="Type of model"></value>
+                <value n="steps"         pn="Steps"          v='1'    string_is='integer' help="Type of model"></value>
+                <value n="tolerance"     pn="Tolerance"      v='0.01' string_is='double'  help="Type of model"></value>
+            </blockdata>
+        </blockdata>
+    </container>
+
+	<container n="stagesHomo" pn="Add. Strains [+]" help="Stages definition. Shown by order of execution." state='hidden'>
+		<blockdata n="substage" name='Strain1' sequence='1' editable_name='unique' help='Stage' morebutton="0" actualize_tree='1'>
+            <value n="steps"  pn="Steps"  v='1.0' string_is='integer' help="Type of model"></value>
+            <value n="strain" pn="Strain" v='0.01 0.0 0.0' help="Type of model"></value>
+        </blockdata>
+    </container>
+
+	
+	<!-- procedimientos -->
+    <procs>
+        <proc n='GetModel' args='args'>
+            <![CDATA[
+            TrencadX::GetModelType $domNode $args model
+            ]]>
+        </proc>
+		<proc n='GetMaterialsList' args='args'>
+            <![CDATA[
+            TrencadX::GetBlocksList $domNode $args materials
+            ]]>
+        </proc>
+		<proc n='GetModelsList' args='args'>
+            <![CDATA[
+            TrencadX::GetBlocksList $domNode $args models
+            ]]>
+        </proc>
+		<proc n='GetBounElem' args='args'>
+            <![CDATA[
+            TrencadX::GetBounElem $domNode $args
+            ]]>
+        </proc>
+		<proc n='GetBodyElem' args='args'>
+            <![CDATA[
+            TrencadX::GetBodyElem $domNode $args
+            ]]>
+        </proc>
+		<proc n='HideConditionModel' args='args'>
+            <![CDATA[
+            TrencadX::HideConditionModel $domNode $args
+            ]]>
+        </proc>
+		<proc n='CheckDOFs' args='args'>
+            <![CDATA[
+            TrencadX::CheckDOFs $domNode $args
+            ]]>
+        </proc>
+		<proc n='FilterDOFs' args='args'>
+            <![CDATA[
+            TrencadX::FilterDOFs $domNode $args
+            ]]>
+        </proc>
+    </procs>
+</TrencadX_customlib_data>

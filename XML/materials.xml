@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?><!-- -*- coding: utf-8; mode: SGML -*- -->
+
+<container n="materials" pn="MATERIALS [+]" icon="materials" help="Simple Materials database">
+
+	<blockdata n="material" name='aluminium' sequence='1' editable_name='unique' help='Material definition' icon="one" morebutton="0" actualize_tree='1'>
+
+	    <value n="type" pn="TYPE" v='elastic' string_is='string'/>
+	
+	    <value n="cttype" pn="CT" v='isotrop' values='isotrop,orthotrop,anisotrop' help="Material type" actualize_tree='1'>
+	
+	        <dependencies value="isotrop"   node="../value[@n='E11']" 	att1="state" v1='normal'/>
+	        <dependencies value="isotrop"   node="../value[@n='E22']" 	att1="state" v1='hidden'/>
+			<dependencies value="isotrop"   node="../value[@n='E33']" 	att1="state" v1='hidden'/>
+	        <dependencies value="isotrop"   node="../value[@n='G12']" 	att1="state" v1='hidden'/>
+	        <dependencies value="isotrop"   node="../value[@n='G13']" 	att1="state" v1='hidden'/>
+			<dependencies value="isotrop"   node="../value[@n='G23']" 	att1="state" v1='hidden'/>
+			<dependencies value="isotrop"   node="../value[@n='n12']" 	att1="state" v1='hidden'/>
+	        <dependencies value="isotrop"   node="../value[@n='n21']" 	att1="state" v1='normal'/>
+			<dependencies value="isotrop"   node="../value[@n='n13']" 	att1="state" v1='hidden'/>
+	        <dependencies value="isotrop"   node="../value[@n='n31']" 	att1="state" v1='hidden'/>
+	        <dependencies value="isotrop"   node="../value[@n='n23']" 	att1="state" v1='hidden'/>
+			<dependencies value="isotrop"   node="../value[@n='n32']" 	att1="state" v1='hidden'/>
+	
+	        <dependencies value="orthotrop" node="../value[@n='E11']" 	att1="state" v1='normal'/>
+	        <dependencies value="orthotrop" node="../value[@n='E22']" 	att1="state" v1='normal'/>
+			<dependencies value="orthotrop" node="../value[@n='E33']" 	att1="state" v1='normal'/>
+	        <dependencies value="orthotrop" node="../value[@n='G12']" 	att1="state" v1='normal'/>
+	        <dependencies value="orthotrop" node="../value[@n='G13']" 	att1="state" v1='normal'/>
+			<dependencies value="orthotrop" node="../value[@n='G23']" 	att1="state" v1='normal'/>
+			<dependencies value="orthotrop" node="../value[@n='n12']" 	att1="state" v1='normal'/>
+	        <dependencies value="orthotrop" node="../value[@n='n21']" 	att1="state" v1='normal'/>
+			<dependencies value="orthotrop" node="../value[@n='n13']" 	att1="state" v1='normal'/>
+	        <dependencies value="orthotrop" node="../value[@n='n31']" 	att1="state" v1='hidden'/>
+	        <dependencies value="orthotrop" node="../value[@n='n23']" 	att1="state" v1='hidden'/>
+			<dependencies value="orthotrop" node="../value[@n='n32']" 	att1="state" v1='hidden'/>
+	        	                    
+	        <dependencies value="anisotrop" node="../value[@n='E11']" 	att1="state" v1='normal'/>
+	        <dependencies value="anisotrop" node="../value[@n='E22']" 	att1="state" v1='normal'/>
+			<dependencies value="anisotrop" node="../value[@n='E33']" 	att1="state" v1='normal'/>
+	        <dependencies value="anisotrop" node="../value[@n='G12']" 	att1="state" v1='normal'/>
+	        <dependencies value="anisotrop" node="../value[@n='G13']" 	att1="state" v1='normal'/>
+			<dependencies value="anisotrop" node="../value[@n='G23']" 	att1="state" v1='normal'/>
+			<dependencies value="anisotrop" node="../value[@n='n12']" 	att1="state" v1='normal'/>
+	        <dependencies value="anisotrop" node="../value[@n='n21']" 	att1="state" v1='normal'/>
+			<dependencies value="anisotrop" node="../value[@n='n13']" 	att1="state" v1='normal'/>
+	        <dependencies value="anisotrop" node="../value[@n='n31']" 	att1="state" v1='normal'/>
+	        <dependencies value="anisotrop" node="../value[@n='n23']" 	att1="state" v1='normal'/>
+			<dependencies value="anisotrop" node="../value[@n='n32']" 	att1="state" v1='normal'/>
+			
+	    </value>
+		
+	    <value n="E11"   pn="__Young Modulus XX"	v='72000'	string_is='double' state='normal'/>
+	    <value n="E22"   pn="__Young Modulus YY"	v='0'		string_is='double' state='hidden'/>
+	    <value n="E33"   pn="__Young Modulus ZZ"	v='0'		string_is='double' state='hidden'/>
+	    <value n="G12"   pn="__Shear Modulus XY"	v="0"		string_is='double' state='hidden'/>
+	    <value n="G13"   pn="__Shear Modulus XZ"	v="0"		string_is='double' state='hidden'/>
+	    <value n="G23"   pn="__Shear Modulus YZ"	v="0"		string_is='double' state='hidden'/>
+	    <value n="n12"   pn="__Poisson Ratio XY"	v="0.3"		string_is='double' state='normal'/>
+	    <value n="n21"   pn="__Poisson Ratio YX"	v="0"		string_is='double' state='hidden'/>
+	    <value n="n13"   pn="__Poisson Ratio XZ"	v="0"		string_is='double' state='hidden'/>
+	    <value n="n31"   pn="__Poisson Ratio ZX"	v="0"		string_is='double' state='hidden'/>
+	    <value n="n23"   pn="__Poisson Ratio YZ"	v="0"		string_is='double' state='hidden'/>
+	    <value n="n32"   pn="__Poisson Ratio ZY"	v="0"		string_is='double' state='hidden'/>
+
+		<value n="density"   		pn="density"				v="1800"  	string_is='double'/>
+
+		<value n="width"     pn="width"     v="1.0" string_is='double' state='[HideConditionModel]'/>
+		<value n="thickness" pn="thickness" v="1.0" string_is='double' state='[HideConditionModel]'/>
+		
+    </blockdata>
+		
+</container> 

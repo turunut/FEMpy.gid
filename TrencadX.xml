@@ -2,14 +2,14 @@
 <!-- -*- coding: utf-8;-*- -->
 <Infoproblemtype version="1.0">
   <Program>
-    <Name>FEMpy</Name>
+    <Name>TrencadX</Name>
     <Version>1.0</Version>   
     <MinimumGiDVersion>13.1.11d</MinimumGiDVersion>
     <CustomLibAutomatic>1</CustomLibAutomatic>
     <CustomLibNativeGroups>1</CustomLibNativeGroups>
     <ImageFileBrowser>images/stages.gif</ImageFileBrowser>
-    <ShortDescription>FEMpy problemtype</ShortDescription>
-    <Description>FEMpy Programa fet per treballar amb el codic FEMpy i FEMju per la tesis del Francesc Turon.
+    <ShortDescription>TrencadX problemtype</ShortDescription>
+    <Description>TrencadX Programa fet per treballar amb el codic TrencadX per la tesis del Francesc Turon.
     </Description>
     <NewsInVersion version="1.0" date="2022-03-10">
     </NewsInVersion>

@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?><!-- -*- coding: utf-8; mode: SGML -*- -->
+
+<container n="models" pn="MODELS [+]" icon="materials" help="Simple Materials database">
+
+	<blockdata n="model" name='body' sequence='1' editable_name='unique' help='Material definition' icon="one" morebutton="0" actualize_tree='1'>
+	
+	    <value n="modelType" pn="type" v='' values='[GetModel]' help="Model type" actualize_tree='1'>
+	
+	        <dependencies value="solid"			node="../value[@n='thickness']" att1="state" v1='hidden'/>
+	        <dependencies value="shell"			node="../value[@n='thickness']" att1="state" v1='normal'/>
+			<dependencies value="planestress"	node="../value[@n='thickness']" att1="state" v1='normal'/>
+	        <dependencies value="planestrain"	node="../value[@n='thickness']" att1="state" v1='normal'/>
+	        <dependencies value="beam"			node="../value[@n='thickness']" att1="state" v1='normal'/>
+	        <dependencies value="truss"			node="../value[@n='thickness']" att1="state" v1='normal'/>
+	
+	        <dependencies value="solid"			node="../value[@n='width']" att1="state" v1='hidden'/>
+	        <dependencies value="shell"			node="../value[@n='width']" att1="state" v1='hidden'/>
+			<dependencies value="planestress"	node="../value[@n='width']" att1="state" v1='hidden'/>
+	        <dependencies value="planestrain"	node="../value[@n='width']" att1="state" v1='hidden'/>
+	        <dependencies value="beam"			node="../value[@n='width']" att1="state" v1='normal'/>
+	        <dependencies value="truss"			node="../value[@n='width']" att1="state" v1='normal'/>
+			
+	    </value>
+		
+	    <value n="thickness" pn="thickness" v='1.0' 	string_is='double' state='hidden'/>
+		<value n="width"     pn="width"    v='1.0' 	string_is='double' state='hidden'/>
+		
+    </blockdata>
+		
+</container> 
