@@ -53,28 +53,28 @@ namespace eval TrencadX {
     set edges(HexahedraQuadratic) {{8}   {9}   {10}  {11}  {16}  {17}  {18}  {19}  {12}  {13}  {14}  {15}}
     set edges(Prism)              {{0 1} {1 2} {2 0} {3 4} {4 5} {5 3} {0 3} {1 4} {2 5}}
     set edges(Pyramid)            {{0 1} {1 2} {2 3} {3 0} {0 4} {1 4} {2 4} {3 4}}
-		                   #2D dof1   dof2   dof3   dof4   dof5   dof6    
-    set dofs2D [dict create truss       {normal normal hidden hidden hidden hidden} \
-		                    beam        {normal normal hidden normal hidden hidden} \
-		                    planestress {normal normal hidden hidden hidden hidden} \
-		                    planestrain {normal normal hidden hidden hidden hidden} \
-		                    shell       {normal normal normal normal normal hidden} \
-		                    solid       {normal normal normal hidden hidden hidden} ]
-		                   #3D dof1   dof2   dof3   dof4   dof5   dof6    
-    set dofs3D [dict create truss       {normal normal normal hidden hidden hidden} \
-		                    beam        {normal normal normal normal normal normal} \
-		                    planestress {normal normal hidden hidden hidden hidden} \
-		                    planestrain {normal normal hidden hidden hidden hidden} \
-		                    shell       {normal normal normal normal normal normal} \
-		                    solid       {normal normal normal hidden hidden hidden} ]
+		            
+    set dofs2D_lista [dict create truss       {0 1         } \
+		                          beam        {0 1   3     } \
+		                          planestress {0 1         } \
+		                          planestrain {0 1         } \
+		                          shell       {0 1 2 3 4   } \
+		                          solid       {0 1 2       } ]
+		            
+    set dofs3D_lista [dict create truss       {0 1   3     } \
+		                          beam        {0 1 2 3 4 5 } \
+		                          planestress {0 1         } \
+		                          planestrain {0 1         } \
+		                          shell       {0 1 2 3 4 5 } \
+		                          solid       {0 1 2       } ]
     
     set NumElemNode [dict create Pyramid       {5 13 13} \
-		         Prism         {6 15 18} \
-		         Hexahedra     {8 20 27} \
-		         Tetrahedra    {4 10 10} \
-		         Quadrilateral {4  8  9} \
-		         Triangle      {3  6  6} \
-		         Line          {2  3  3} ]
+		                         Prism         {6 15 18} \
+		                         Hexahedra     {8 20 27} \
+		                         Tetrahedra    {4 10 10} \
+		                         Quadrilateral {4  8  9} \
+		                         Triangle      {3  6  6} \
+		                         Line          {2  3  3} ]
 }
 
 #################################################
@@ -251,22 +251,30 @@ proc TrencadX::CheckDOFs { domNode args } {
 }
 
 proc TrencadX::FilterDOFs { domNode args } {
-    variable dofs2D
-    variable dofs3D
+    variable dofs2D_lista
+    variable dofs3D_lista
     set model [ TrencadX::GetNodeValue {/TrencadX_customlib_data/value[@n='model']} ]
     set dimen [ TrencadX::GetNodeValue {/TrencadX_customlib_data/value[@n='dimension']} ]
 
-    set name [get_domnode_attribute $domNode n]
-    set last [string index $name end]
+    set dof [get_domnode_attribute $domNode n]
+    #if { [string range $dof 0 end-1] eq "flg" } { 
+    #    regsub {^flg} $dof dof result
+    #    set dof $result
+    #}
+    set last [string index $dof end]
     set lastNum [expr {$last + 0}]
-
-    if { $dimen eq "2D" } {
-	set status [lindex [dict get $dofs2D $model] $lastNum]
-    } elseif { $dimen eq "3D" } {
-	set status [lindex [dict get $dofs3D $model] $lastNum]
+	
+    if { $dimen eq "2D" } { 
+	set diccDOFs $dofs2D_lista 
+    } elseif { $dimen eq "3D" } { 
+	set diccDOFs $dofs3D_lista 
     }
 
-    return $status
+    set dofs_model [dict get $diccDOFs $model]
+    
+    if { [lsearch -exact $dofs_model $lastNum] >= 0 } { return normal }
+
+    return hidden
 }
 
 ###################################################################################################
@@ -646,42 +654,43 @@ proc TrencadX::WriteModels { filename } {
     
 }
 
-proc TrencadX::GetListDOFValues { gNode } {
-    variable dofs2D
-    variable dofs3D
+proc TrencadX::GetListDOFValues { gNode flg } {
+    variable dofs2D_lista
+    variable dofs3D_lista
     set model [ TrencadX::GetNodeValue {/TrencadX_customlib_data/value[@n='model']} ]
     set dimen [ TrencadX::GetNodeValue {/TrencadX_customlib_data/value[@n='dimension']} ]
 	
-    if { $dimen eq "2D" } {
-	set diccDOFs $dofs2D
-    } elseif { $dimen eq "3D" } {
-	set diccDOFs $dofs3D
+    if { $dimen eq "2D" } { 
+	set diccDOFs $dofs2D_lista 
+    } elseif { $dimen eq "3D" } { 
+	set diccDOFs $dofs3D_lista 
     }
+
+    set dofs_model [dict get $diccDOFs $model]
 	
     set vals [list]
-    set dofs [list dof0 dof1 dof2 dof3 dof4 dof5]
-    for {set i 0} {$i < [llength $dofs]} {incr i} {
-	    set dof [lindex $dofs $i]
-	    set status [lindex [dict get $diccDOFs $model] $i]
-	    if { $status eq "normal" } {
-		set dof_node [$gNode selectNodes {./value[@n=$dof]}]
-		set dof_value [$dof_node @v]
+    set dofs [list 0 1 2 3 4 5]
+    foreach dof $dofs {
+	    if { [lsearch -exact $dofs_model $dof] >= 0 } {
+	    set word "${flg}${dof}"
+	    set dof_node [$gNode selectNodes {./value[@n=$word]}]
+		    set dof_value [$dof_node @v]
 		lappend vals $dof_value
 	    }
     }
-    
     return $vals
-    
 }
 
 proc TrencadX::PrintCondition { document address } {
 
     foreach gNode [$document selectNodes {//condition[@n=$address]/group}] {
+	set condition_formats ""
 	set n [$gNode @n]
-	set vals [TrencadX::GetListDOFValues $gNode]
+	set flgs [TrencadX::GetListDOFValues $gNode "flg"]
+	set vals [TrencadX::GetListDOFValues $gNode "dof"]
 	    
-	dict set condition_formats $n "%d $vals \n"
-	GiD_WriteCalculationFile nodes $condition_formats
+	dict set condition_formats $n "%d $flgs $vals \n"
+	GiD_WriteCalculationFile nodes -sorted -unique $condition_formats
     }
 
 }
@@ -689,6 +698,7 @@ proc TrencadX::PrintCondition { document address } {
 proc TrencadX::PrintConditionElements { document address } {
 
     foreach gNode [$document selectNodes {//condition[@n=$address]/group}] {
+	set condition_formats ""
 	set n [$gNode @n]
 	set vals [TrencadX::GetListDOFValues $gNode]
 	    
@@ -744,4 +754,59 @@ proc GiD_Event_AfterRunCalculation { basename dir problemtypedir where error err
     
     }
 
+}
+
+proc TrencadX::PrintConditionEdges { kind } {
+    set meshType [GiD_Info Project Quadratic]
+    set document [$::gid_groups_conds::doc documentElement]
+    variable edges
+	foreach gNode [$document selectNodes {//container[@n="loadsMEC3D"]/condition[@n="Lines_NF"]/group}] {
+	    set condition_formats ""
+	    set n [$gNode @n]
+	    set value_node [$gNode selectNodes {./value[@n="valueX"]}]
+	    set valueX [$value_node @v]
+	    regsub -all { } $valueX "" valueX
+	    set value_node [$gNode selectNodes {./value[@n="valueY"]}]
+	    set valueY [$value_node @v]
+	    regsub -all { } $valueY "" valueY
+	    set value_node [$gNode selectNodes {./value[@n="valueZ"]}]
+	    set valueZ [$value_node @v]
+	    regsub -all { } $valueZ "" valueZ
+	    dict set condition_formats $n "%d \n"
+	    PLCd::WriteString "####################FLAGnewLines_NF########################"
+	    PLCd::WriteString "$valueX $valueY $valueZ"
+	    set group_nodes_sorted [lsort -integer [GiD_EntitiesGroups get $n nodes]]
+	    foreach element_type {Tetrahedra Hexahedra Prism Pyramid} {
+		    set element_num_edges [PLCd::GetElementNumEdges $element_type]
+		    foreach item [GiD_Info Mesh Elements $element_type -sublist] {
+		        set element_id [lindex $item 0]
+		        set element_nodes [lrange $item 1 end-1]
+		        for {set i_edge 0} {$i_edge<$element_num_edges} {incr i_edge} {
+		            set edge_nodes [PLCd::GetEdgeNodes $element_type $element_nodes $i_edge]
+		            set edge_match true
+		            foreach edge_node_id $edge_nodes {
+		                if { [lsearch -sorted -integer $group_nodes_sorted $edge_node_id] == -1 } {
+		                    set edge_match false
+		                    break
+		                }
+		            }
+		            if { $edge_match } {
+		                if { $meshType == 0 } {
+		                    PLCd::WriteString "$element_id $edge_nodes"
+		                } else {
+		                    PLCd::WriteString "$element_id $edge_nodes [lindex $element_nodes [lindex $edges(HexahedraQuadratic) $i_edge]]"
+		                }
+		            }
+		        }
+		    }
+	    }
+	}
+}
+
+proc TrencadX::NormalSolidOnly { document address } {
+    set model [ TrencadX::GetNodeValue {/TrencadX_customlib_data/value[@n='model']} ]
+    if {$model eq "solid"} {
+        return normal
+    }
+    return hidden
 }

@@ -42,45 +42,83 @@
 	
     <container n="bcs" pn="Boundary Conditions" icon="boundaryConditions">
 	    <condition n="dirichlet" pn="DIRICHLET" ov='point,line,surface,volume' ovm="node">
+		    <value n="flg0" pn="imposed"  v="1" values='0,1' state='normal'/>
 		    <value n="dof0" pn="displ. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg1" pn="imposed"  v="1" values='0,1' state='normal'/>
 		    <value n="dof1" pn="displ. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg2" pn="imposed"  v="1" values='0,1'         state='[FilterDOFs]'/>
 		    <value n="dof2" pn="displ. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg3" pn="imposed"  v="1" values='0,1'         state='[FilterDOFs]'/>
 		    <value n="dof3" pn="rotat. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg4" pn="imposed"  v="1" values='0,1'         state='[FilterDOFs]'/>
 		    <value n="dof4" pn="rotat. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg5" pn="imposed"  v="1" values='0,1'         state='[FilterDOFs]'/>
 		    <value n="dof5" pn="rotat. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
 	    </condition>
     </container>
 	
     <container n="lds" pn="LOADS" icon="nodalForce">
 	    <condition n="nodalLD" pn="NODAL" ov='point,line,surface,volume' ovm="node">
+		    <value n="flg0" pn="active"  v="1" values='0,1' state='normal'/>
 		    <value n="dof0" pn="reacc. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg1" pn="active"  v="1" values='0,1' state='normal'/>
 		    <value n="dof1" pn="reacc. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg2" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof2" pn="reacc. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg3" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof3" pn="momen. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg4" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof4" pn="momen. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg5" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
+		    <value n="dof5" pn="momen. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+	    </condition>
+	    <condition n="edgeLD" pn="EDGE" ov='line' ovm="nodes" state='[NormalSolidOnly]'>
+		    <value n="flg0" pn="active"  v="1" values='0,1' state='normal'/>
+		    <value n="dof0" pn="reacc. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg1" pn="active"  v="1" values='0,1' state='normal'/>
+		    <value n="dof1" pn="reacc. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg2" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
+		    <value n="dof2" pn="reacc. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg3" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
+		    <value n="dof3" pn="momen. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg4" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
+		    <value n="dof4" pn="momen. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg5" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof5" pn="momen. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
 	    </condition>
 	    <condition n="boundaryLD" pn="BOUNDARY" ov='[GetBounElem]' ovm="face_element" help="Select your material and the volumes related to it">
+		    <value n="flg0" pn="active"  v="1" values='0,1' state='normal'/>
 		    <value n="dof0" pn="reacc. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg1" pn="active"  v="1" values='0,1' state='normal'/>
 		    <value n="dof1" pn="reacc. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg2" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof2" pn="reacc. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg3" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof3" pn="momen. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg4" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof4" pn="momen. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg5" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof5" pn="momen. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
 	    </condition>
 	    <condition n="bodyLD" pn="BODY" ov='[GetBodyElem]' ovm="element" help="Select your material and the volumes related to it">
+		    <value n="flg0" pn="active"  v="1" values='0,1' state='normal'/>
 		    <value n="dof0" pn="reacc. x" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg1" pn="active"  v="1" values='0,1' state='normal'/>
 		    <value n="dof1" pn="reacc. y" v="0.0" string_is="double" state='normal'/>
+		    <value n="flg2" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof2" pn="reacc. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg3" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof3" pn="momen. x" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg4" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof4" pn="momen. y" v="0.0" string_is="double" state='[FilterDOFs]'/>
+		    <value n="flg5" pn="active"  v="1" values='0,1'          state='[FilterDOFs]'/>
 		    <value n="dof5" pn="momen. z" v="0.0" string_is="double" state='[FilterDOFs]'/>
 	    </condition>
     </container>
 
 	<container n="stagesAnly" pn="STAGES [+]" icon="stages" help="Stages definition. Shown by order of execution." state='normal'>
-        <blockdata n="stage" name='STAGE1' sequence='1' editable_name='unique' icon="one" help='Stage' morebutton="0" actualize_tree='1'>
-			<blockdata n="substage" name='SUBSTAGE1' sequence='1' editable_name='unique' icon="one" help='Stage' morebutton="0" actualize_tree='1'>
+        <blockdata n="stage" name='stage1' sequence='1' editable_name='unique' icon="one" help='Stage' morebutton="0" actualize_tree='1'>
+			<blockdata n="substage" name='substage1' sequence='1' editable_name='unique' icon="one" help='Stage' morebutton="0" actualize_tree='1'>
                 <value n="loadIncrement" pn="Load Increment" v='1.0'  string_is='double'  help="Type of model"></value>
                 <value n="steps"         pn="Steps"          v='1'    string_is='integer' help="Type of model"></value>
                 <value n="tolerance"     pn="Tolerance"      v='0.01' string_is='double'  help="Type of model"></value>
@@ -136,6 +174,11 @@
 		<proc n='FilterDOFs' args='args'>
             <![CDATA[
             TrencadX::FilterDOFs $domNode $args
+            ]]>
+        </proc>
+		<proc n='NormalSolidOnly' args='args'>
+            <![CDATA[
+            TrencadX::NormalSolidOnly $domNode $args
             ]]>
         </proc>
     </procs>
