@@ -28,6 +28,9 @@
 	
 	<value n="model" pn="MODEL" v='planestress' values='[GetModel]' icon="one" help="Type of model" actualize_tree='1'></value>
 	
+	<value n="lrgStrai" pn="L.STRAI." v='no' values='yes,no' help="Dimension"></value>
+	<value n="lrgDispl" pn="L.DISPL." v='no' values='yes,no' help="Dimension"></value>
+	
     <container n="dataHomo" pn="Data Homogenization" state='hidden'>
         <value n="homogenization" pn="Homogenization" v='True'   values='True,False' help="Type of model"></value>
         <value n="displField"     pn="Displ. Field"   v='FO'     values='FO,SO'      help="Type of model"></value>
