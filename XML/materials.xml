@@ -2,12 +2,13 @@
 
 <container n="materials" pn="MATERIALS [+]" icon="materials" help="Simple Materials database">
 
-	<blockdata n="material" name='aluminium' sequence='1' editable_name='unique' help='Material definition' icon="one" morebutton="0" actualize_tree='1'>
+	<blockdata n="material" name='aluminium' sequence='1' editable_name='unique' help='Material definition' icon="one" morebutton="0" actualize='1'>
 
 	    <value n="type" pn="TYPE" v='elastic' string_is='string'/>
 	
-	    <value n="cttype" pn="CT" v='isotrop' values='isotrop,orthotrop,anisotrop' help="Material type" actualize_tree='1'>
-	
+	    <value n="cttype" pn="CT" v='isotrop' values='isotrop,orthotrop,anisotrop' help="Material type" actualize='1'>
+	    <!-- -
+		update_proc='ShowHideVarsCTs'
 	        <dependencies value="isotrop"   node="../value[@n='E11']" 	att1="state" v1='normal'/>
 	        <dependencies value="isotrop"   node="../value[@n='E22']" 	att1="state" v1='hidden'/>
 			<dependencies value="isotrop"   node="../value[@n='E33']" 	att1="state" v1='hidden'/>
@@ -34,7 +35,7 @@
 	        <dependencies value="orthotrop" node="../value[@n='n23']" 	att1="state" v1='hidden'/>
 			<dependencies value="orthotrop" node="../value[@n='n32']" 	att1="state" v1='hidden'/>
 	        	                    
-	        <dependencies value="anisotrop" node="../value[@n='E11']" 	att1="state" v1='normal'/>
+	        <dependencies value="anisotrop" node="../value[@n='E11']" 	att1="state" v1='hidden'/>
 	        <dependencies value="anisotrop" node="../value[@n='E22']" 	att1="state" v1='normal'/>
 			<dependencies value="anisotrop" node="../value[@n='E33']" 	att1="state" v1='normal'/>
 	        <dependencies value="anisotrop" node="../value[@n='G12']" 	att1="state" v1='normal'/>
@@ -46,21 +47,42 @@
 	        <dependencies value="anisotrop" node="../value[@n='n31']" 	att1="state" v1='normal'/>
 	        <dependencies value="anisotrop" node="../value[@n='n23']" 	att1="state" v1='normal'/>
 			<dependencies value="anisotrop" node="../value[@n='n32']" 	att1="state" v1='normal'/>
-			
+		-->
 	    </value>
 		
-	    <value n="E11"   pn="__Young Modulus XX"	v='72000'	string_is='double' state='normal'/>
-	    <value n="E22"   pn="__Young Modulus YY"	v='0'		string_is='double' state='hidden'/>
-	    <value n="E33"   pn="__Young Modulus ZZ"	v='0'		string_is='double' state='hidden'/>
-	    <value n="G12"   pn="__Shear Modulus XY"	v="0"		string_is='double' state='hidden'/>
-	    <value n="G13"   pn="__Shear Modulus XZ"	v="0"		string_is='double' state='hidden'/>
-	    <value n="G23"   pn="__Shear Modulus YZ"	v="0"		string_is='double' state='hidden'/>
-	    <value n="n12"   pn="__Poisson Ratio XY"	v="0.3"		string_is='double' state='normal'/>
-	    <value n="n21"   pn="__Poisson Ratio YX"	v="0"		string_is='double' state='hidden'/>
-	    <value n="n13"   pn="__Poisson Ratio XZ"	v="0"		string_is='double' state='hidden'/>
-	    <value n="n31"   pn="__Poisson Ratio ZX"	v="0"		string_is='double' state='hidden'/>
-	    <value n="n23"   pn="__Poisson Ratio YZ"	v="0"		string_is='double' state='hidden'/>
-	    <value n="n32"   pn="__Poisson Ratio ZY"	v="0"		string_is='double' state='hidden'/>
+	    <value n="e11"   pn="__e11"	v='72000'	string_is='double' state='[returnState]'/>
+	    <value n="e22"   pn="__e22"	v='0'		string_is='double' state='[returnState]'/>
+	    <value n="e33"   pn="__e33"	v='0'		string_is='double' state='[returnState]'/>
+	    <value n="g12"   pn="__g12"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="g13"   pn="__g13"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="g23"   pn="__g23"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="n12"   pn="__n12"	v="0.3"		string_is='double' state='[returnState]'/>
+	    <value n="n21"   pn="__n21"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="n13"   pn="__n13"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="n31"   pn="__n31"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="n23"   pn="__n23"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="n32"   pn="__n32"	v="0"		string_is='double' state='[returnState]'/>
+	    <value n="c11"   pn="__c11"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c12"   pn="__c12"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c13"   pn="__c13"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c14"   pn="__c14"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c15"   pn="__c15"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c16"   pn="__c16"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c22"   pn="__c22"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c23"   pn="__c23"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c24"   pn="__c24"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c25"   pn="__c25"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c26"   pn="__c26"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c33"   pn="__c33"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c34"   pn="__c34"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c35"   pn="__c35"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c36"   pn="__c36"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c44"   pn="__c44"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c45"   pn="__c45"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c46"   pn="__c46"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c55"   pn="__c55"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c56"   pn="__c56"	v='0.0'		string_is='double' state='[returnState]'/>
+	    <value n="c66"   pn="__c66"	v='0.0'		string_is='double' state='[returnState]'/>
 
 		<value n="density"   		pn="density"				v="1800"  	string_is='double'/>
 

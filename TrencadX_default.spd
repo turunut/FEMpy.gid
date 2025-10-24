@@ -184,5 +184,15 @@
             TrencadX::NormalSolidOnly $domNode $args
             ]]>
         </proc>
+		<proc n='ShowHideVarsCTs' args='args'>
+            <![CDATA[
+            TrencadX::ShowHideVarsCTs $domNode $args
+            ]]>
+        </proc>
+		<proc n='returnState' args='args'>
+            <![CDATA[
+            TrencadX::returnState $domNode $args
+            ]]>
+        </proc>
     </procs>
 </TrencadX_customlib_data>

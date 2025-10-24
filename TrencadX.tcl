@@ -75,6 +75,11 @@ namespace eval TrencadX {
 		                         Quadrilateral {4  8  9} \
 		                         Triangle      {3  6  6} \
 		                         Line          {2  3  3} ]
+    
+    set allProps [list e11 e22 e33 g12 g13 g23 n12 n13 n23 c11 c12 c13 c14 c15 c16 c22 c23 c24 c25 c26 c33 c34 c35 c36 c44 c45 c46 c55 c56 c66]
+    set ctsProps [dict create isotrop   {e11 n12} \
+		              orthotrop {e11 e22 e33 g12 g13 g23 n12 n13 n23} \
+		              anisotrop {c11 c12 c13 c14 c15 c16 c22 c23 c24 c25 c26 c33 c34 c35 c36 c44 c45 c46 c55 c56 c66} ]
 }
 
 #################################################
@@ -563,6 +568,7 @@ proc TrencadX::WriteBCs { filename } {
 }
 
 proc TrencadX::WriteMaterials { filename } {
+    variable ctsProps
     
     #set document [$::gid_groups_conds::doc documentElement]
 
@@ -591,24 +597,14 @@ proc TrencadX::WriteMaterials { filename } {
 	    GiD_WriteCalculationFile puts "    type: $flg_type" 
 	    
 	    set flg_cttype [[$block selectNodes {./value[@n="cttype"]}] @v]
+    
+	    set current_props [dict get $ctsProps $flg_cttype]
 	    
 	    GiD_WriteCalculationFile puts "    ct: $flg_cttype"
 	
-	    if { $flg_cttype eq "isotrop" } {
-		#set E11 [[$block selectNodes {./value[@n="E11"]}] @v]
-		GiD_WriteCalculationFile puts "      E11--: [[$block selectNodes {./value[@n="E11"]}] @v]"
-		GiD_WriteCalculationFile puts "      n12--: [[$block selectNodes {./value[@n="n12"]}] @v]"
-	    } elseif { $flg_cttype eq "orthotrop" } {
-		GiD_WriteCalculationFile puts "      E11--: [[$block selectNodes {./value[@n="E11"]}] @v]"
-		GiD_WriteCalculationFile puts "      E22--: [[$block selectNodes {./value[@n="E22"]}] @v]"
-		GiD_WriteCalculationFile puts "      E33--: [[$block selectNodes {./value[@n="E33"]}] @v]"
-		GiD_WriteCalculationFile puts "      G12--: [[$block selectNodes {./value[@n="G12"]}] @v]"
-		GiD_WriteCalculationFile puts "      G13--: [[$block selectNodes {./value[@n="G13"]}] @v]"
-		GiD_WriteCalculationFile puts "      G23--: [[$block selectNodes {./value[@n="G23"]}] @v]"
-		GiD_WriteCalculationFile puts "      n12--: [[$block selectNodes {./value[@n="n12"]}] @v]"
-		GiD_WriteCalculationFile puts "      n13--: [[$block selectNodes {./value[@n="n13"]}] @v]"
-		GiD_WriteCalculationFile puts "      n23--: [[$block selectNodes {./value[@n="n23"]}] @v]"
-	    }
+	foreach prop $current_props {
+	    GiD_WriteCalculationFile puts "      $prop--: [[$block selectNodes {./value[@n=$prop]}] @v]"
+	}
 	    GiD_WriteCalculationFile puts "    end_ct"
 	    
 	    GiD_WriteCalculationFile puts "  end_material"
@@ -806,7 +802,47 @@ proc TrencadX::PrintConditionEdges { kind } {
 proc TrencadX::NormalSolidOnly { document address } {
     set model [ TrencadX::GetNodeValue {/TrencadX_customlib_data/value[@n='model']} ]
     if {$model eq "solid"} {
-        return normal
+	return normal
     }
     return hidden
+}
+
+proc TrencadX::ShowHideVarsCTs { donNode args } {
+    variable allProps
+    variable ctsProps
+    
+    set cttype [$donNode @v]
+    set matNode [$donNode parentNode]
+    
+    set current_props [dict get $ctsProps $cttype]
+    
+    foreach prop $allProps {
+    set node [$matNode selectNodes {./value[@n=$prop]}]
+    #set value [[$matNode selectNodes {./value[@n=$prop]}] @v]
+    if {[lsearch -exact $current_props $prop] >= 0} {
+    $node setAttribute state normal
+    } else {
+    $node setAttribute state hidden
+    }
+    }
+    return
+}
+
+proc TrencadX::returnState { donNode args } {
+    variable allProps
+    variable ctsProps
+    
+    set n [$donNode @n]
+    
+    set matNode [$donNode parentNode]
+    set node_cttype [$matNode selectNodes {./value[@n="cttype"]}]
+    
+    set cttype [$node_cttype @v]
+    
+    set current_props [dict get $ctsProps $cttype]
+    if {[lsearch -exact $current_props $n] >= 0} {
+    return normal
+    } else {
+    return hidden
+    }
 }
